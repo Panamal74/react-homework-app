@@ -17,20 +17,9 @@ import Spinner from '../../components/Spinner';
 
 class Scheduler extends Component {
     static propTypes = {
-        applicationTitle:          PropTypes.string.isRequired,
-        checkFieldLength:          PropTypes.func.isRequired,
-        currentUserFirstName:      PropTypes.string.isRequired,
-        currentUserLastName:       PropTypes.string.isRequired,
-        doChangeTask:              PropTypes.func.isRequired,
-        doCompleteAll:             PropTypes.func.isRequired,
-        doCreateTask:              PropTypes.func.isRequired,
-        doRemoveTask:              PropTypes.func.isRequired,
-        getCompletedFavoriteTasks: PropTypes.func.isRequired,
-        getCompletedOtherTasks:    PropTypes.func.isRequired,
-        getFavoriteTasks:          PropTypes.func.isRequired,
-        getFilterTasks:            PropTypes.func.isRequired,
-        getOtherTasks:             PropTypes.func.isRequired,
-
+        applicationTitle:     PropTypes.string.isRequired,
+        currentUserFirstName: PropTypes.string.isRequired,
+        currentUserLastName:  PropTypes.string.isRequired,
     };
     constructor () {
         super();

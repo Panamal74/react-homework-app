@@ -16,13 +16,10 @@ import Styles from './styles.m.css';
 
 export default class Task extends Component {
     static propTypes = {
-        checkFieldLength: PropTypes.func.isRequired,
-        completed:        PropTypes.bool.isRequired,
-        doChangeTask:     PropTypes.func.isRequired,
-        doRemoveTask:     PropTypes.func.isRequired,
-        favorite:         PropTypes.bool.isRequired,
-        id:               PropTypes.string.isRequired,
-        message:          PropTypes.string.isRequired,
+        completed: PropTypes.bool.isRequired,
+        favorite:  PropTypes.bool.isRequired,
+        id:        PropTypes.string.isRequired,
+        message:   PropTypes.string.isRequired,
     };
     constructor () {
         super();
