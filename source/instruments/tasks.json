@@ -3,7 +3,7 @@
         {
             "id": "xjh",
             "message": "Успешно пройти React-интенсив компании Lectrum",
-            "completed": false,
+            "completed": true,
             "favorite": true
         },
         {
@@ -21,14 +21,14 @@
         {
             "id": "rjh",
             "message": "Записать собаку на груминг",
-            "completed": false,
+            "completed": true,
             "favorite": false
         },
         {
             "id": "xph",
             "message": "Научиться играть на барабанах",
-            "completed": true,
-            "favorite": false
+            "completed": false,
+            "favorite": true
         }
     ]
 }
