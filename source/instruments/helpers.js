@@ -2,6 +2,20 @@ export function getDisplayName (WrappedComponent) {
     return WrappedComponent.displayName || WrappedComponent.name || 'Component';
 }
 
+function compareItemsByDateASC (a, b) {
+    const firstCompareElement = a.modified ? Date.parse(a.modified) : Date.parse(a.created);
+    const secondCompareElement = b.modified ? Date.parse(b.modified) : Date.parse(b.created);
+
+    return secondCompareElement - firstCompareElement;
+}
+
+function compareItemsByDateDESC (a, b) {
+    const firstCompareElement = a.modified ? Date.parse(a.modified) : Date.parse(a.created);
+    const secondCompareElement = b.modified ? Date.parse(b.modified) : Date.parse(b.created);
+
+    return firstCompareElement - secondCompareElement;
+}
+
 export function getFilterTasks (searchValue = '', tasks = []) {
     if (typeof searchValue !== "string") {
         throw new Error("Первый аргумент функции должен иметь тип string");
@@ -22,44 +36,44 @@ export function getFilterTasks (searchValue = '', tasks = []) {
     return returnValue;
 }
 
-export function getFavoriteTasks (filterTasks = []) {
+export function getFavoriteTasks (filterTasks = [], method = true) {
     if (!Array.isArray(filterTasks)) {
         throw new Error("Аргумент функции должен иметь тип array");
     }
 
     return filterTasks.filter((value) =>
         value.favorite === true && value.completed === false
-    );
+    ).sort(method ? compareItemsByDateASC : compareItemsByDateDESC);
 }
 
-export function getCompletedFavoriteTasks (filterTasks = []) {
+export function getCompletedFavoriteTasks (filterTasks = [], method = true) {
     if (!Array.isArray(filterTasks)) {
         throw new Error("Аргумент функции должен иметь тип array");
     }
 
     return filterTasks.filter((value) =>
         value.completed === true && value.favorite === true
-    );
+    ).sort(method ? compareItemsByDateASC : compareItemsByDateDESC);
 }
 
-export function getCompletedOtherTasks (filterTasks = []) {
+export function getCompletedOtherTasks (filterTasks = [], method = true) {
     if (!Array.isArray(filterTasks)) {
         throw new Error("Аргумент функции должен иметь тип array");
     }
 
     return filterTasks.filter((value) =>
         value.completed === true && value.favorite === false
-    );
+    ).sort(method ? compareItemsByDateASC : compareItemsByDateDESC);
 }
 
-export function getOtherTasks (filterTasks = []) {
+export function getOtherTasks (filterTasks = [], method = true) {
     if (!Array.isArray(filterTasks)) {
         throw new Error("Аргумент функции должен иметь тип array");
     }
 
     return filterTasks.filter((value) =>
         value.completed === false && value.favorite === false
-    );
+    ).sort(method ? compareItemsByDateASC : compareItemsByDateDESC);
 }
 
 export function checkFieldLength (value = '', maxLength = 50) {

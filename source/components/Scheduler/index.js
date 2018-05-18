@@ -1,7 +1,8 @@
 // Core
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Transition, TransitionGroup } from 'react-transition-group';
+import { Transition } from 'react-transition-group';
+import FlipMove from 'react-flip-move';
 
 // Instruments
 import { withApi } from "../../components/HOC/withApi";
@@ -14,6 +15,7 @@ import Styles from './styles.m.css';
 import Checkbox from '../../theme/assets/Checkbox';
 import Task from '../../components/Task';
 import Spinner from '../../components/Spinner';
+import UpIcon from './baseline-arrow_upward-24px.svg';
 
 class Scheduler extends Component {
     static propTypes = {
@@ -27,11 +29,13 @@ class Scheduler extends Component {
         this.handleSubmit = this._handleSubmit.bind(this);
         this.handleInputKeyDown = this._handleInputKeyDown.bind(this);
         this.getRenderTasks = this._getRenderTasks.bind(this);
+        this.handleCompare = this._handleCompare.bind(this);
     }
     state = {
-        inputValue:  '',
-        searchValue: '',
-        duration:    0.3,
+        inputValue:    '',
+        searchValue:   '',
+        duration:      0.3,
+        compareMethod: true,
     };
 
     _handleChangeInputValue (event) {
@@ -98,6 +102,12 @@ class Scheduler extends Component {
         });
     }
 
+    _handleCompare () {
+        const { compareMethod } = this.state;
+
+        this.setState({ compareMethod: !compareMethod });
+    }
+
     render () {
         const {
             applicationTitle,
@@ -115,6 +125,7 @@ class Scheduler extends Component {
         const {
             inputValue,
             searchValue,
+            compareMethod,
         } = this.state;
 
         const completeAll = tasks.every((value) => {
@@ -122,10 +133,13 @@ class Scheduler extends Component {
         });
 
         const showTasks = getFilterTasks(searchValue, tasks);
-        const renderFavoriteTasks = this.getRenderTasks(getFavoriteTasks(showTasks));
-        const renderOtherTasks = this.getRenderTasks(getOtherTasks(showTasks));
-        const renderCompletedFavoriteTasks = this.getRenderTasks(getCompletedFavoriteTasks(showTasks));
-        const renderCompletedOtherTasks = this.getRenderTasks(getCompletedOtherTasks(showTasks));
+        const showAll = this.getRenderTasks(
+            getFavoriteTasks(showTasks, compareMethod).concat(
+                getOtherTasks(showTasks, compareMethod),
+                getCompletedFavoriteTasks(showTasks, compareMethod),
+                getCompletedOtherTasks(showTasks, compareMethod)
+            )
+        );
 
         return (
             <div>
@@ -134,13 +148,24 @@ class Scheduler extends Component {
                     <main>
                         <header>
                             <h1>{ applicationTitle }</h1>
-                            <input
-                                name = 'searchValue'
-                                placeholder = 'Поиск'
-                                type = 'text'
-                                value = { searchValue }
-                                onChange = { this.handleChangeInputValue }
-                            />
+                            <div>
+                                <input
+                                    name = 'searchValue'
+                                    placeholder = 'Поиск'
+                                    type = 'text'
+                                    value = { searchValue }
+                                    onChange = { this.handleChangeInputValue }
+                                />
+                                <button
+                                    id = 'sortButton'
+                                    onClick = { this.handleCompare }>
+                                    <img
+                                        alt = 'sort'
+                                        className = { compareMethod ? Styles.sortInStart : Styles.sortInEnd }
+                                        src = { UpIcon }
+                                    />
+                                </button>
+                            </div>
                         </header>
                         <section>
                             <form>
@@ -157,14 +182,12 @@ class Scheduler extends Component {
                                 </button>
                             </form>
                             <div className = { Styles.overlay }>
-                                <ul>
-                                    <TransitionGroup>
-                                        { renderFavoriteTasks }
-                                        { renderOtherTasks }
-                                        { renderCompletedFavoriteTasks }
-                                        { renderCompletedOtherTasks }
-                                    </TransitionGroup>
-                                </ul>
+                                <FlipMove
+                                    duration = { 300 }
+                                    easing = 'ease-out'
+                                    typeName = 'ul'>
+                                    { showAll }
+                                </FlipMove>
                             </div>
                         </section>
                         <footer>
@@ -189,7 +212,6 @@ class Scheduler extends Component {
                     </main>
                 </section>
             </div>
-
         );
     }
 }

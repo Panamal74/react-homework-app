@@ -136,6 +136,8 @@ export default class Task extends Component {
             completed,
             favorite,
             id,
+            created,
+            modified,
         } = this.props;
         const {
             disabled,
@@ -154,14 +156,17 @@ export default class Task extends Component {
                         color2 = '#FFF'
                         onClick = { this.completeCheckboxClick }
                     />
-                    <input
-                        defaultValue = { message }
-                        disabled = { disabled }
-                        ref = { this.textInput }
-                        type = 'text'
-                        onChange = { this.handleChangeInputValue }
-                        onKeyDown = { this.inputKeyDown }
-                    />
+                    <div>
+                        <input
+                            defaultValue = { message }
+                            disabled = { disabled }
+                            ref = { this.textInput }
+                            type = 'text'
+                            onChange = { this.handleChangeInputValue }
+                            onKeyDown = { this.inputKeyDown }
+                        />
+                        <span style = { { fontSize: 10 } }>Created / modified: { modified ? modified : created }</span>
+                    </div>
                 </div>
                 <div className = { Styles.actions }>
                     <Star
